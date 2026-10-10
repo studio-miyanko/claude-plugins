@@ -8,8 +8,8 @@
     "name": "miyanko",
     "url": "https://github.com/studio-miyanko"
   },
-  "homepage": "https://github.com/studio-miyanko/wow-addon-dev",
-  "repository": "https://github.com/studio-miyanko/wow-addon-dev",
+  "homepage": "https://github.com/studio-miyanko/claude-plugins/tree/main/plugins/wow-addon-dev",
+  "repository": "https://github.com/studio-miyanko/claude-plugins",
   "license": "MIT",
   "keywords": [
     "world-of-warcraft",
