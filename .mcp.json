@@ -10,8 +10,8 @@
       "args": ["-y", "github:marco-vrinssen/reddit-mcp#v1.0.0"]
     },
     "wow-armory": {
-      "command": "npx",
-      "args": ["-y", "github:studio-miyanko/wow-armory-mcp#v1.0.0"]
+      "type": "http",
+      "url": "https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp"
     }
   }
 }

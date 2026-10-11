@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 (2026-10-11)
+
+- The armory runs as the hosted endpoint of wow-armory-mcp, so character lookups need no Blizzard client and no setup.
+
 ## 2.0.0 (2026-10-11)
 
 - The plugin no longer ships its own MCP server. It starts three standalone servers instead: `wowhead-mcp` locked to WoW Forever, `reddit-mcp` and `wow-armory-mcp`.

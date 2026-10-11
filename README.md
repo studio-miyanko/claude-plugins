@@ -19,9 +19,9 @@ The plugin starts three standalone MCP servers, each usable on its own:
 |---|---|---|
 | `wowhead` | [studio-miyanko/wowhead-mcp](https://github.com/studio-miyanko/wowhead-mcp), locked to WoW Forever | `search`, `get_page`, `get_news` |
 | `reddit` | [marco-vrinssen/reddit-mcp](https://github.com/marco-vrinssen/reddit-mcp) | `search`, `browse`, `get_post` |
-| `wow-armory` | [studio-miyanko/wow-armory-mcp](https://github.com/studio-miyanko/wow-armory-mcp) | `character`, `realm` |
+| `wow-armory` | [studio-miyanko/wow-armory-mcp](https://github.com/studio-miyanko/wow-armory-mcp), hosted | `character`, `realm` |
 
-The armory needs a free Blizzard API client. Its README shows the setup in three steps. Without one, the other tools work as usual.
+The armory runs as a hosted endpoint, so it needs no setup and no Blizzard account.
 
 ## Install
 
@@ -44,13 +44,12 @@ In Chat or Cowork, open Customize, Plugins, Add, Add marketplace, and enter `stu
 {
   "mcpServers": {
     "wowhead": { "command": "npx", "args": ["-y", "github:studio-miyanko/wowhead-mcp#semver:^1"], "env": { "WOWHEAD_EDITION": "forever" } },
-    "reddit": { "command": "npx", "args": ["-y", "github:marco-vrinssen/reddit-mcp#semver:^1"] },
-    "wow-armory": { "command": "npx", "args": ["-y", "github:studio-miyanko/wow-armory-mcp#semver:^1"] }
+    "reddit": { "command": "npx", "args": ["-y", "github:marco-vrinssen/reddit-mcp#semver:^1"] }
   }
 }
 ```
 
-Restart the app afterwards.
+Restart the app afterwards. Add the armory under Settings, Connectors, Add custom connector, with the URL `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp`.
 
 ### Codex
 
@@ -63,7 +62,7 @@ codex plugin add wow-forever-search@studio-miyanko
 
 ### Other agents
 
-The skill alone installs with `npx skills add studio-miyanko/wow-forever-search`. Add the three servers from the config above to any MCP host.
+The skill alone installs with `npx skills add studio-miyanko/wow-forever-search`. Add the two local servers from the config above and the armory URL to any MCP host.
 
 ## Usage
 

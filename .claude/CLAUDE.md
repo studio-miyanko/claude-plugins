@@ -3,7 +3,8 @@
 ## Rules
 
 - Since 2.0.0 (2026-10-11) the repo is a Claude Code plugin with the Agent Skill in `skills/wow-forever-search/` and no server code. `.mcp.json` starts three standalone MCP servers: `studio-miyanko/wowhead-mcp` with `WOWHEAD_EDITION=forever`, `marco-vrinssen/reddit-mcp` and `studio-miyanko/wow-armory-mcp`. Fix sources in those repos.
-- `.mcp.json` pins each server to an exact tag with `npx -y github:<repo>#vX.Y.Z`, because Claude Code runs no `npm install` for plugins. Skill and tools never drift, and a server's `main` can break without reaching users. Bumping a server tag is a plugin release.
+- `.mcp.json` pins the local servers to an exact tag with `npx -y github:<repo>#vX.Y.Z`, because Claude Code runs no `npm install` for plugins. Skill and tools never drift, and a server's `main` can break without reaching users. Bumping a server tag is a plugin release.
+- Since 2.1.0 the armory is the hosted endpoint `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp`, so users need no Blizzard client. It serves whatever wow-armory-mcp release was deployed last, so deploy only tagged releases there.
 - It is listed in the marketplace repo `studio-miyanko/claude-plugins` with a `url` source, which both Claude Code and Codex read.
 - WoW Forever only (user, 2026-10-09), so answers never mix in Retail or Classic. The wowhead server refuses pages without the Forever label, checked after redirects, and keeps only comments written for Forever. The skill limits Reddit to posts about Forever. `character` reads Retail and Classic until Blizzard's API has Forever characters, and the skill says so.
 - Personal, non-commercial use only. Wowhead's EULA forbids commercial use without written permission, Reddit's Public Content Policy restricts commercial use, and Anthropic's directory policy wants control over every fetched site, so the plugin is not submitted there (checked 2026-10-09).
