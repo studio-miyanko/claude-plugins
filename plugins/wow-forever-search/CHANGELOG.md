@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0 (2026-10-11)
+
+- Wowhead runs as the hosted endpoint of wowhead-mcp, locked to WoW Forever, so only Reddit still runs locally.
+- Moved into `studio-miyanko/claude-plugins` with its history. The install commands stay the same.
+
 ## 2.1.0 (2026-10-11)
 
 - The armory runs as the hosted endpoint of wow-armory-mcp, so character lookups need no Blizzard client and no setup.

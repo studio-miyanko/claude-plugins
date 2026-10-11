@@ -13,19 +13,15 @@ Lets Claude answer anything about WoW Forever: items, drops, quests, NPCs, spell
 
 ## Servers
 
-The plugin starts three standalone MCP servers, each usable on its own:
-
-| Server | Repo | Tools |
+| Server | Runs | Tools |
 |---|---|---|
-| `wowhead` | [studio-miyanko/wowhead-mcp](https://github.com/studio-miyanko/wowhead-mcp), locked to WoW Forever | `search`, `get_page`, `get_news` |
-| `reddit` | [marco-vrinssen/reddit-mcp](https://github.com/marco-vrinssen/reddit-mcp) | `search`, `browse`, `get_post` |
-| `wow-armory` | [studio-miyanko/wow-armory-mcp](https://github.com/studio-miyanko/wow-armory-mcp), hosted | `character`, `realm` |
+| [wowhead](https://github.com/studio-miyanko/wowhead-mcp) | Hosted at `https://wowhead-mcp.marco-vrinssen.workers.dev/forever/mcp`, locked to WoW Forever | `search`, `get_page`, `get_news` |
+| [wow-armory](https://github.com/studio-miyanko/wow-armory-mcp) | Hosted at `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp` | `character`, `realm` |
+| [reddit](https://github.com/marco-vrinssen/reddit-mcp) | Locally through `npx`, because Reddit's limit counts per IP | `search`, `browse`, `get_post` |
 
-The armory runs as a hosted endpoint, so it needs no setup and no Blizzard account.
+The hosted servers need no setup or account. Reddit needs Node 22 or later and git. Without them, everything else still works.
 
 ## Install
-
-Requires Node 22 or later and git.
 
 ### Claude Code
 
@@ -38,18 +34,19 @@ Works in the terminal, the Code tab of the Claude desktop app and the IDE extens
 
 ### Claude app
 
-In Chat or Cowork, open Customize, Plugins, Add, Add marketplace, and enter `studio-miyanko/claude-plugins`. Cowork sessions on your computer run the MCP servers. Chat loads only the skill, so add the servers there in Settings, Developer, Edit Config:
+In Chat or Cowork, open Customize, Plugins, Add, Add marketplace, and enter `studio-miyanko/claude-plugins`. Chat loads only the skill, so add the servers there too:
+
+1. Settings, Connectors, Add custom connector, with the URL `https://wowhead-mcp.marco-vrinssen.workers.dev/forever/mcp`.
+2. The same for `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp`.
+3. Optional, for Reddit, in Settings, Developer, Edit Config, then restart the app:
 
 ```json
 {
   "mcpServers": {
-    "wowhead": { "command": "npx", "args": ["-y", "github:studio-miyanko/wowhead-mcp#semver:^1"], "env": { "WOWHEAD_EDITION": "forever" } },
     "reddit": { "command": "npx", "args": ["-y", "github:marco-vrinssen/reddit-mcp#semver:^1"] }
   }
 }
 ```
-
-Restart the app afterwards. Add the armory under Settings, Connectors, Add custom connector, with the URL `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp`.
 
 ### Codex
 
@@ -62,7 +59,13 @@ codex plugin add wow-forever-search@studio-miyanko
 
 ### Other agents
 
-The skill alone installs with `npx skills add studio-miyanko/wow-forever-search`. Add the two local servers from the config above and the armory URL to any MCP host.
+Agents that read Agent Skills install the skill with:
+
+```
+npx skills add studio-miyanko/claude-plugins --skill wow-forever-search
+```
+
+Then connect the two hosted URLs above, and optionally the Reddit server, in the agent's MCP settings.
 
 ## Usage
 

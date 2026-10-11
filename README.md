@@ -5,7 +5,7 @@ Claude Code plugins by Studio Miyanko, published as the marketplace `studio-miya
 | Plugin | Does |
 |---|---|
 | [wow-addon-dev](plugins/wow-addon-dev) | WoW addon and WeakAura development, checked against Blizzard's UI source for each game flavor |
-| [wow-forever-search](https://github.com/studio-miyanko/wow-forever-search) | searches WoW Forever on Wowhead and Reddit and looks up characters on Blizzard's armory, through three standalone MCP servers |
+| [wow-forever-search](plugins/wow-forever-search) | searches WoW Forever on Wowhead and Reddit and looks up characters on Blizzard's armory, through three standalone MCP servers |
 
 ## Install
 
