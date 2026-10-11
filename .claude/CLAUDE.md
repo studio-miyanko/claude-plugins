@@ -2,33 +2,31 @@
 
 ## Rules
 
-- One public repo is the Claude Code plugin, the Agent Skill in `skills/wow-forever-search/` and the MCP server in `src/`, all named `wow-forever-search`. It is listed in the marketplace repo `studio-miyanko/claude-plugins` with a `url` source, which both Claude Code and Codex read, and stays its own repo because its root is the MCP package.
-- `.mcp.json` starts the server with `npx -y github:studio-miyanko/wow-forever-search#vX.Y.Z`, because Claude Code runs no `npm install` for plugins. The tag pins each installed plugin to its own server, so skill and tools never drift and `main` can break without reaching users.
-- MCP-only users run `github:studio-miyanko/wow-forever-search#semver:^1`, which follows the newest 1.x tag. A breaking tool change needs a major version and the README updated to the new range.
-- WoW Forever only (user, 2026-10-09), so answers never mix in Retail or Classic. Every request goes to `/forever/` paths or the Forever news feed. `get_page` refuses any page without Wowhead's `"dataTree":"Forever"` label, checked after redirects, and comments pass only with `dataTree` 16, the Forever value. Older comments on the same pages are from 2005 to 2020 and describe other mechanics.
-- Personal, non-commercial use only. Wowhead's EULA forbids commercial use without written permission, and Anthropic's directory policy wants control over every fetched site, so the plugin is not submitted there (checked 2026-10-09).
-- Keep tool output plain text. `get_page` returns long pages in parts of `PAGE_CHARS` through `pagePart`, so no page loses its end.
+- Since 2.0.0 (2026-10-11) the repo is a Claude Code plugin with the Agent Skill in `skills/wow-forever-search/` and no server code. `.mcp.json` starts three standalone MCP servers: `studio-miyanko/wowhead-mcp` with `WOWHEAD_EDITION=forever`, `marco-vrinssen/reddit-mcp` and `studio-miyanko/wow-armory-mcp`. Fix sources in those repos.
+- `.mcp.json` pins each server to an exact tag with `npx -y github:<repo>#vX.Y.Z`, because Claude Code runs no `npm install` for plugins. Skill and tools never drift, and a server's `main` can break without reaching users. Bumping a server tag is a plugin release.
+- It is listed in the marketplace repo `studio-miyanko/claude-plugins` with a `url` source, which both Claude Code and Codex read.
+- WoW Forever only (user, 2026-10-09), so answers never mix in Retail or Classic. The wowhead server refuses pages without the Forever label, checked after redirects, and keeps only comments written for Forever. The skill limits Reddit to posts about Forever. `character` reads Retail and Classic until Blizzard's API has Forever characters, and the skill says so.
+- Personal, non-commercial use only. Wowhead's EULA forbids commercial use without written permission, Reddit's Public Content Policy restricts commercial use, and Anthropic's directory policy wants control over every fetched site, so the plugin is not submitted there (checked 2026-10-09).
 
 ## Sources
 
-- Add a source only if it allows bots. Check its robots.txt and AI content signals first, identify with the shared User-Agent in `src/http.js`, and never fake a browser or route around a block.
-- Checked on 2026-10-07 and left out: Icy Veins (has `/wow-forever/` guides, but Cloudflare blocks every non-browser client), Archon.gg (same), Reddit (robots.txt disallows everything, API access needs approval since 2025-11-11), Warcraft Logs (no WoW Forever logs, API needs an OAuth client), Forever Logs (robots.txt disallows `/api/` and `/reports/`, its API answers "API access not allowed"). Warcraft Wiki was dropped at the user's request.
-- Wowhead's robots.txt disallows `/search`, `/list`, `/account` and `/random` for bots. Names are looked up in database listings like `/forever/quests/name:library`, and a test fails if a lookup requests a disallowed path.
-- There is no character tool. The retail one (Blizzard armory and Raider.IO) was removed on 2026-10-09. Add a character tool back only once Forever characters exist on the armory, after launch on 2026-11-04. Forever has no realms and two-part names.
-- `curl` gets a CloudFront 403 from www.wowhead.com, while Node's `fetch` and Python's `urllib` get through. Probe pages with `node -e`.
-- The Wowhead parser depends on these page markers: `g_pageInfo`, `WH.Gatherer.addData`, `WH.markup.printHtml`, `new Listview`, `lv_comments0`, `g_mapperData` and the main column `<div class="text">`. Page data is JSON with some JavaScript fields, which `parseJson` in `src/embedded.js` handles.
+- Add a source only as a standalone MCP server, after checking its robots.txt, terms and AI content signals. Identify honestly in the User-Agent, and never fake a browser or route around a block.
+- Reddit was added on 2026-10-11 at the user's request, although its robots.txt disallows all crawlers. The reddit server reads only the public RSS feeds Reddit offers to feed readers, on demand and at Reddit's rate limit. The logged-out JSON API answers 403, and new OAuth apps need Reddit's approval since 2025-11.
+- Checked on 2026-10-07 and left out: Icy Veins (has `/wow-forever/` guides, but Cloudflare blocks every non-browser client), Archon.gg (same), Warcraft Logs (no WoW Forever logs, API needs an OAuth client), Forever Logs (robots.txt disallows `/api/` and `/reports/`, its API answers "API access not allowed"). Raider.IO went with the retail character tool on 2026-10-09. Warcraft Wiki was dropped at the user's request.
+- WoW Forever launches on 2026-11-04 without realms: players pick a ruleset and have a two-part name unique per region. Once Blizzard publishes a Forever namespace, add a `forever` flavor to wow-armory-mcp and lock the plugin's server to it.
 
 ## Checks
 
-- `npm test` after every change to `src/`. It reads every source live.
 - `claude plugin validate --strict .claude-plugin/plugin.json` checks the plugin. Fix every warning.
 - `npx skills add . --list` confirms that other agents find the skill.
-- The Validate workflow runs the plugin and skill checks on every push to `main` and every pull request. It skips `npm test`, because CI addresses may be blocked by the sources.
+- `claude --plugin-dir .` loads the plugin with its three servers. `/mcp` shows whether each one started.
+- The Validate workflow runs both checks on every push to `main` and every pull request.
 
 ## Release
 
-1. Bump `version` in `.claude-plugin/plugin.json`, `package.json` and `package-lock.json`, and the tag in `.mcp.json`, to the same value. Installed copies only update when the plugin version changes.
-2. Run the checks and fix every warning.
-3. Add the changes to `CHANGELOG.md`.
-4. Push and wait for the Validate workflow to pass.
-5. Tag `vX.Y.Z` and create a GitHub release.
+1. Bump `version` in `.claude-plugin/plugin.json`. Installed copies only update when the plugin version changes.
+2. Point each server tag in `.mcp.json` at a released tag of that server.
+3. Run the checks and fix every warning.
+4. Add the changes to `CHANGELOG.md`.
+5. Push and wait for the Validate workflow to pass.
+6. Tag `vX.Y.Z` and create a GitHub release.

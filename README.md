@@ -1,13 +1,27 @@
 # WoW Forever Search
 
-Lets Claude answer anything about WoW Forever: items, drops, quests, NPCs, spells, talents, guides, news and patch notes. A bundled MCP server reads Wowhead's WoW Forever data in full, and a skill turns what it finds into short answers with sources.
+Lets Claude answer anything about WoW Forever: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead, what players say on Reddit, and a character's gear and stats from Blizzard's armory. A skill turns what three MCP servers find into short answers with sources.
 
 ## What it does
 
 - Looks every fact up on Wowhead instead of answering from memory: stats, drop chances, coordinates, quest steps.
 - Sums up patch notes and beta builds per class, with before and after values and whether each change is a buff, a nerf or internal only.
 - Reads long pages, like full patch notes, in parts, so nothing gets cut off.
-- Reads WoW Forever only. Pages of Retail, Classic and other versions are refused, and comments written for older versions are left out, so no answer mixes in other mechanics.
+- Reads WoW Forever only. Wowhead pages of Retail, Classic and other versions are refused, and comments written for older versions are left out.
+- Finds what players say about WoW Forever on Reddit, and treats it as opinion, not fact.
+- Looks up characters through Blizzard's official API. Blizzard has no WoW Forever characters in its API yet, so until it adds them this covers Retail and Classic realms.
+
+## Servers
+
+The plugin starts three standalone MCP servers, each usable on its own:
+
+| Server | Repo | Tools |
+|---|---|---|
+| `wowhead` | [studio-miyanko/wowhead-mcp](https://github.com/studio-miyanko/wowhead-mcp), locked to WoW Forever | `search`, `get_page`, `get_news` |
+| `reddit` | [marco-vrinssen/reddit-mcp](https://github.com/marco-vrinssen/reddit-mcp) | `search`, `browse`, `get_post` |
+| `wow-armory` | [studio-miyanko/wow-armory-mcp](https://github.com/studio-miyanko/wow-armory-mcp) | `character`, `realm` |
+
+The armory needs a free Blizzard API client. Its README shows the setup in three steps. Without one, the other tools work as usual.
 
 ## Install
 
@@ -24,12 +38,14 @@ Works in the terminal, the Code tab of the Claude desktop app and the IDE extens
 
 ### Claude app
 
-In Chat or Cowork, open Customize, Plugins, Add, Add marketplace, and enter `studio-miyanko/claude-plugins`. Cowork sessions on your computer run the MCP server. Chat loads only the skill, so add the server there in Settings, Developer, Edit Config:
+In Chat or Cowork, open Customize, Plugins, Add, Add marketplace, and enter `studio-miyanko/claude-plugins`. Cowork sessions on your computer run the MCP servers. Chat loads only the skill, so add the servers there in Settings, Developer, Edit Config:
 
 ```json
 {
   "mcpServers": {
-    "wow-forever-search": { "command": "npx", "args": ["-y", "github:studio-miyanko/wow-forever-search#semver:^1"] }
+    "wowhead": { "command": "npx", "args": ["-y", "github:studio-miyanko/wowhead-mcp#semver:^1"], "env": { "WOWHEAD_EDITION": "forever" } },
+    "reddit": { "command": "npx", "args": ["-y", "github:marco-vrinssen/reddit-mcp#semver:^1"] },
+    "wow-armory": { "command": "npx", "args": ["-y", "github:studio-miyanko/wow-armory-mcp#semver:^1"] }
   }
 }
 ```
@@ -47,9 +63,7 @@ codex plugin add wow-forever-search@studio-miyanko
 
 ### Other agents
 
-The MCP server runs in any MCP host with `npx -y github:studio-miyanko/wow-forever-search#semver:^1`, which always runs the newest 1.x release. The skill alone installs with `npx skills add studio-miyanko/wow-forever-search`.
-
-To host the tools in your own code, such as a Cloudflare Worker, import `createServer` from `wow-forever-search/src/server.js` and connect it to any MCP transport.
+The skill alone installs with `npx skills add studio-miyanko/wow-forever-search`. Add the three servers from the config above to any MCP host.
 
 ## Usage
 
@@ -61,31 +75,16 @@ Examples:
 
 - `/wow-forever-search paladin, hunter, priest and rogue changes in the latest beta build`
 - `/wow-forever-search where does Thunderfury drop?`
-- `/wow-forever-search best leveling guide for a holy priest`
+- `/wow-forever-search what do players think of the new dual spec level on Reddit?`
 
 It also triggers on its own for WoW Forever questions and Wowhead links.
 
-## Tools
+## Sources and terms
 
-| Tool | Input | Returns |
-|---|---|---|
-| `search` | `query` | WoW Forever items, NPCs, quests and spells whose names match, with their Wowhead URLs |
-| `get_page` | `url`, `offset` | A WoW Forever page as text: tooltip, quick facts, map coordinates, quest text, drop sources with chances, vendors, abilities, guides and top WoW Forever comments. Long pages come in parts, each naming the `offset` of the next |
-| `get_news` | none | The 10 latest WoW Forever news posts on Wowhead |
+- [Wowhead's WoW Forever section](https://www.wowhead.com/forever): database pages, listings, tooltips, guides and news. The data belongs to Wowhead, and its terms apply.
+- Reddit's public RSS feeds, read on demand at Reddit's rate limit of about one request a minute. Reddit's Public Content Policy applies.
+- Blizzard's official Profile API, under Blizzard's API terms.
 
-## Source
+Every server names its repo in its User-Agent, caches answers and fetches nothing outside its source. The plugin is for personal, non-commercial use.
 
-Everything comes from [Wowhead's WoW Forever section](https://www.wowhead.com/forever): its database pages, database listings, tooltips, guides and news feed. Wowhead labels every page and comment with its game version, and the server keeps only what is labeled WoW Forever, checked after redirects.
-
-The server follows Wowhead's robots.txt, names this repo in its User-Agent, caches answers for an hour and fetches nothing outside Wowhead. It is for personal, non-commercial use. The data belongs to Wowhead, and its terms apply.
-
-## Develop
-
-```sh
-npm install
-npm test
-```
-
-The tests read every source live, so a failure usually means a page layout or API changed. Try the server in the MCP Inspector with `npx @modelcontextprotocol/inspector node src/index.js`, and the plugin with `claude --plugin-dir .`.
-
-World of Warcraft is a trademark of Blizzard Entertainment. This project is not affiliated with Blizzard or Wowhead.
+World of Warcraft is a trademark of Blizzard Entertainment. This project is not affiliated with Blizzard, Wowhead or Reddit.
