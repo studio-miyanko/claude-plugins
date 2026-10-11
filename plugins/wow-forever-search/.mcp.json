@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "wowhead": {
+      "command": "npx",
+      "args": ["-y", "github:studio-miyanko/wowhead-mcp#v1.0.0"],
+      "env": { "WOWHEAD_EDITION": "forever" }
+    },
+    "reddit": {
+      "command": "npx",
+      "args": ["-y", "github:marco-vrinssen/reddit-mcp#v1.0.0"]
+    },
+    "wow-armory": {
+      "type": "http",
+      "url": "https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp"
+    }
+  }
+}
