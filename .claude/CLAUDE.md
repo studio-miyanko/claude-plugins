@@ -4,7 +4,7 @@
 
 - The repo is the marketplace `studio-miyanko`, listed in `.claude-plugin/marketplace.json`. The local folder is `~/Developer/studio-miyanko-claude-plugins`, because `~/Developer/claude-plugins` is Marco's own marketplace.
 - Plugins without a runtime package live in `plugins/<name>/` with their own `.claude-plugin/plugin.json`, `skills/`, README and CHANGELOG, listed with `source: "./plugins/<name>"`.
-- wow-forever-search stays its own repo, because its root is also the MCP server package that `npx github:studio-miyanko/wow-forever-search` installs. It is listed with a `url` source, which Codex reads too. Its rules and release steps live there.
+- wow-forever-search is its own repo, listed with a `url` source, which Codex reads too. Its rules and release steps live there. It was its own repo because its root was the MCP server package. Since 2.0.0 (2026-10-11) the servers live in their own repos, so moving it into `plugins/` is open.
 - Commits are authored as miyanko through the `includeIf` in `~/.gitconfig`, which matches the `studio-miyanko` remote.
 
 ## wow-addon-dev
