@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "wow-forever-search",
   "displayName": "WoW Forever Search",
-  "version": "2.2.0",
-  "description": "Search WoW Forever in Claude: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead's WoW Forever data, what players say on Reddit, and character stats from Blizzard's armory, summed up with sources.",
+  "version": "3.0.0",
+  "description": "Search WoW Forever in Claude: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead's WoW Forever data and character stats from Blizzard's armory, summed up with sources.",
   "author": {
     "name": "miyanko",
     "url": "https://github.com/studio-miyanko"
@@ -15,7 +15,6 @@
     "world-of-warcraft",
     "wow-forever",
     "wowhead",
-    "reddit",
     "armory",
     "patch-notes",
     "mcp"

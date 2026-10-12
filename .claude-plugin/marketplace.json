@@ -16,7 +16,7 @@
     {
       "name": "wow-forever-search",
       "source": "./plugins/wow-forever-search",
-      "description": "Search WoW Forever in Claude: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead's WoW Forever data, what players say on Reddit, and character stats from Blizzard's armory, summed up with sources.",
+      "description": "Search WoW Forever in Claude: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead's WoW Forever data and character stats from Blizzard's armory, summed up with sources.",
       "category": "productivity"
     }
   ]

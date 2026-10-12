@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0 (2026-10-12)
+
+- Removed Reddit, because the anonymous RSS server did not work reliably. Both remaining servers are hosted, so the plugin no longer needs Node or git.
+
 ## 2.2.0 (2026-10-11)
 
 - Wowhead runs as the hosted endpoint of wowhead-mcp, locked to WoW Forever, so only Reddit still runs locally.

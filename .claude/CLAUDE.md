@@ -15,14 +15,13 @@
 
 ## wow-forever-search
 
-- Skill plus `.mcp.json`, no server code. It moved here from `studio-miyanko/wow-forever-search` on 2026-10-11, with its history, and that repo is archived. Fix sources in the server repos `studio-miyanko/wowhead-mcp`, `studio-miyanko/wow-armory-mcp` and `marco-vrinssen/reddit-mcp`.
+- Skill plus `.mcp.json`, no server code. It moved here from `studio-miyanko/wow-forever-search` on 2026-10-11, with its history, and that repo is archived. Fix sources in the server repos `studio-miyanko/wowhead-mcp` and `studio-miyanko/wow-armory-mcp`.
 - Wowhead and the armory are the hosted endpoints `https://wowhead-mcp.marco-vrinssen.workers.dev/forever/mcp` and `https://wow-armory-mcp.marco-vrinssen.workers.dev/mcp`, so users need no setup for them. They serve the server release deployed last.
-- Reddit runs locally, pinned with `npx -y github:marco-vrinssen/reddit-mcp#vX.Y.Z`, because Reddit's limit counts per IP and a shared host would split it among all users. Bumping that tag is a plugin release.
-- WoW Forever only (user, 2026-10-09), so answers never mix in Retail or Classic. The wowhead endpoint refuses pages of other versions and keeps only Forever comments. The skill limits Reddit to posts about Forever. `character` reads Retail and Classic until Blizzard's API has Forever characters, and the skill says so.
+- WoW Forever only (user, 2026-10-09), so answers never mix in Retail or Classic. The wowhead endpoint refuses pages of other versions and keeps only Forever comments. `character` reads Retail and Classic until Blizzard's API has Forever characters, and the skill says so.
 - Public and installable by anyone, but not submitted to Anthropic's directory: its policy wants control over every site a plugin fetches, and Wowhead's EULA forbids commercial use without written permission (checked 2026-10-09).
-- Add a source only as a standalone MCP server, after checking its robots.txt, terms and AI content signals. Identify honestly, and never fake a browser or route around a block. Reddit was added on 2026-10-11 at the user's request although its robots.txt disallows crawlers: RSS feeds only, on demand, at Reddit's limit.
-- Left out: Icy Veins and Archon.gg (Cloudflare blocks non-browser clients), Warcraft Logs (no Forever logs yet), Forever Logs (robots.txt and API refuse), Warcraft Wiki (user's call). WoW Forever launches on 2026-11-04 without realms: once Blizzard publishes a Forever namespace, add a `forever` flavor to wow-armory-mcp.
-- `claude --plugin-dir plugins/wow-forever-search` loads it, and `/mcp` shows whether all three servers connect.
+- Add a source only as a standalone MCP server, after checking its robots.txt, terms and AI content signals. Identify honestly, and never fake a browser or route around a block.
+- Left out: Icy Veins and Archon.gg (Cloudflare blocks non-browser clients), Warcraft Logs (no Forever logs yet), Forever Logs (robots.txt and API refuse), Warcraft Wiki (user's call), Reddit (added 2026-10-11, removed 2026-10-12 at the user's request because the anonymous RSS server did not work). WoW Forever launches on 2026-11-04 without realms: once Blizzard publishes a Forever namespace, add a `forever` flavor to wow-armory-mcp.
+- `claude --plugin-dir plugins/wow-forever-search` loads it, and `/mcp` shows whether both servers connect.
 
 ## Checks
 
