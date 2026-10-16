@@ -12,12 +12,6 @@
       "source": "./plugins/wow-addon-dev",
       "description": "World of Warcraft addon and WeakAura development. Verifies every API against the matching flavor branch of Blizzard's UI source, covers Midnight secret values, and builds ready-to-paste WeakAura import strings.",
       "category": "development"
-    },
-    {
-      "name": "wow-forever-search",
-      "source": "./plugins/wow-forever-search",
-      "description": "Search WoW Forever in Claude: items, drops, quests, NPCs, spells, talents, guides, news and patch notes from Wowhead's WoW Forever data and character stats from Blizzard's armory, summed up with sources.",
-      "category": "productivity"
     }
   ]
 }
